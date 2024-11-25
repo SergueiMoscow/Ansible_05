@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         VENV_DIR   = 'venv'
+        REPO_DIR   = './'
     }
 
     stages {
