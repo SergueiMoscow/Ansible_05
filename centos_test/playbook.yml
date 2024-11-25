@@ -1,0 +1,35 @@
+---
+- name: Prepare the container
+  become: true
+  hosts: all
+  tasks:
+#    - name: Download repo
+#      become: true
+#    # doc: https://vector.dev/docs/setup/installation/package-managers/yum/
+#      ansible.builtin.shell: |
+#        curl --proto '=https' --tlsv1.2 -sSfL https://sh.vector.dev | bash -s -- -y --prefix /usr/local
+#      args:
+#        chdir: /root/
+#        creates: "/usr/local/bin/vector"
+
+    - name: Download vector installation script
+      become: true
+      ansible.builtin.get_url:
+        url: https://sh.vector.dev
+        dest: /root/install_vector.sh
+        owner: "root"
+        mode: '0755'
+
+    - name: Download vector installation script
+      become: true
+      ansible.builtin.get_url:
+        url: https://sh.vector.dev
+        dest: /root/install_vector1.sh
+        owner: "root"
+        mode: '0755'
+
+
+    - name: Ensure vector executable is available
+      stat:
+        path: "/usr/local/bin/vector"
+      register: vector_stat
