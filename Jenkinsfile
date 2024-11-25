@@ -2,26 +2,19 @@ pipeline {
     agent any
 
     environment {
-        REPO_URL   = 'git@github.com:SergueiMoscow/Ansible_05.git'
-        REPO_DIR   = 'Ansible_05'
         VENV_DIR   = 'venv'
     }
 
     stages {
-        stage('Preparation') {
+        stage('Setup Virtual Environment') {
             steps {
                 script {
-                    if (fileExists(REPO_DIR)) {
-                        echo "Directory ${REPO_DIR} exists. Performing git pull..."
-                        dir(REPO_DIR) {
-                            sh 'git pull'
-                        }
+                    // Создание виртуального окружения, если оно еще не существует
+                    if (!fileExists(VENV_DIR)) {
+                        echo "Creating virtual environment..."
+                        sh "python3 -m venv ${VENV_DIR}"
                     } else {
-                        echo "Directory ${REPO_DIR} does not exist. Cloning the repository..."
-                        sh "git clone ${REPO_URL} ${REPO_DIR}"
-                        dir(REPO_DIR) {
-                            sh "python3 -m venv ${VENV_DIR}"
-                        }
+                        echo "Virtual environment already exists. Skipping creation."
                     }
                 }
             }
